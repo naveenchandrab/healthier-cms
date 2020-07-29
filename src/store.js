@@ -1,16 +1,20 @@
+/* eslint-disable no-underscore-dangle */
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
-import postReducer from './reducers/post-reducer';
 import thunk from 'redux-thunk';
+// import postReducer from './reducers/post-reducer';
 
 const rootReducer = combineReducers({
-  posts: postReducer,
-})
+  // posts: postReducer
+});
 
 const initialState = {
-  posts: [],
-}
+  posts: []
+};
 
-const allStoreEnhancers = compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+const allStoreEnhancers = compose(
+  applyMiddleware(thunk),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 const store = createStore(rootReducer, initialState, allStoreEnhancers);
 
