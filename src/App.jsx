@@ -4,9 +4,14 @@ import PropTypes from 'prop-types';
 import { ThemeProvider } from '@material-ui/styles';
 import { CssBaseline } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
+import Axios from 'axios';
 import Root from './modules/Root';
 import theme from './utils/theme';
 import Login from './modules/Login';
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+Axios.defaults.baseURL = BASE_URL;
 
 const App = () => {
   return (

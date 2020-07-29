@@ -96,11 +96,11 @@ const Topbar = ({ open, onDrawerOpen, currentTab }) => {
               vertical: 'bottom',
               horizontal: 'right'
             }}
-            keepMounted
             transformOrigin={{
-              vertical: 'bottom',
+              vertical: 'top',
               horizontal: 'right'
             }}
+            keepMounted
             open={manuOpen}
             onClose={handleClose}
           >

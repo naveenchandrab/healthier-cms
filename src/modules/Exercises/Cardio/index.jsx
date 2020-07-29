@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-underscore-dangle */
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -12,8 +13,8 @@ import {
   TableBody
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import OutlinedTextField from '../../../components/common/OutlinedTextField';
-import ResponsiveGridLayout from '../../../components/common/ResponsiveGridLayout';
+import { getExercises } from '../../../utils/apis/exercises';
+import CardioForm from './CardioForm';
 
 const useStyles = makeStyles({
   tableCell: {
@@ -23,6 +24,16 @@ const useStyles = makeStyles({
 
 const Cardio = () => {
   const classes = useStyles();
+  const [data, setData] = useState();
+
+  const getData = async () => {
+    const result = await getExercises();
+    setData(result);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <Box>
@@ -30,32 +41,7 @@ const Cardio = () => {
         <Typography variant="h6">Cardio Excersises</Typography>
       </Box>
       <Box marginBottom={4}>
-        <form>
-          <Box marginBottom={2}>
-            <ResponsiveGridLayout minwidth={300}>
-              <Box>
-                <OutlinedTextField fullWidth name="name" placeholder="Name" />
-              </Box>
-              <Box>
-                <OutlinedTextField
-                  fullWidth
-                  name="category"
-                  placeholder="Category"
-                />
-              </Box>
-              <Box>
-                <Button variant="outlined" color="primary">
-                  Upload Video
-                </Button>
-              </Box>
-            </ResponsiveGridLayout>
-          </Box>
-          <Box maxWidth={150}>
-            <Button fullWidth variant="contained" color="primary">
-              Submit
-            </Button>
-          </Box>
-        </form>
+        <CardioForm />
       </Box>
       <Box>
         <TableContainer component={Paper} elevation={0}>
@@ -77,29 +63,32 @@ const Cardio = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell className={classes.tableCell} padding="none">
-                  a
-                </TableCell>
-                <TableCell className={classes.tableCell} padding="none">
-                  a
-                </TableCell>
-                <TableCell className={classes.tableCell} padding="none">
-                  a
-                </TableCell>
-                <TableCell className={classes.tableCell} padding="none">
-                  <Box display="flex" justifyContent="flex-end">
-                    <Box marginRight={2}>
-                      <Button variant="outlined" color="primary">
-                        Update
-                      </Button>
-                    </Box>
-                    <Button variant="contained" color="primary">
-                      Delete
-                    </Button>
-                  </Box>
-                </TableCell>
-              </TableRow>
+              {data &&
+                data.map(exercise => (
+                  <TableRow key={exercise._id}>
+                    <TableCell className={classes.tableCell} padding="none">
+                      {exercise.name}
+                    </TableCell>
+                    <TableCell className={classes.tableCell} padding="none">
+                      {exercise.category.name}
+                    </TableCell>
+                    <TableCell className={classes.tableCell} padding="none">
+                      {exercise.video}
+                    </TableCell>
+                    <TableCell className={classes.tableCell} padding="none">
+                      <Box display="flex" justifyContent="flex-end">
+                        <Box marginRight={2}>
+                          <Button variant="outlined" color="primary">
+                            Update
+                          </Button>
+                        </Box>
+                        <Button variant="contained" color="primary">
+                          Delete
+                        </Button>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
