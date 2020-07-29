@@ -3,14 +3,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from '@material-ui/styles';
 import { CssBaseline } from '@material-ui/core';
+import { Route, Switch } from 'react-router-dom';
 import Root from './modules/Root';
 import theme from './utils/theme';
+import Login from './modules/Login';
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Root />
+      <div className="app">
+        <Switch>
+          <Route path="/dashboard" component={Root} />
+          <Route path="/" component={Login} />
+          <Route path="*" component={Login} />
+        </Switch>
+      </div>
     </ThemeProvider>
   );
 };

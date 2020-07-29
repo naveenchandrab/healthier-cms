@@ -53,7 +53,7 @@ const routes = [
   },
   {
     id: 2,
-    name: 'Gymnastics'
+    name: 'Gymnastic'
   },
   {
     id: 3,

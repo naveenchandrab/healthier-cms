@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import SideNav from '../SideNav';
 import Topbar from '../Topbar';
+import Yoga from '../Exercises/Yoga';
+import Cardio from '../Exercises/Cardio';
+import Gymnastic from '../Exercises/Gymnastic';
 
 const drawerWidth = 240;
 
@@ -33,6 +36,7 @@ const useStyles = makeStyles(theme => ({
 const Root = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(true);
+  const { url } = useRouteMatch();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -57,26 +61,10 @@ const Root = () => {
             path="/dashboard/NewProjects/:id/request/:requestId/quotation"
             component={Quotation}
           />
-          <PrivateRoute
-            exact
-            path="/dashboard/NewProjects/:id/request/:requestId/invoice"
-            component={Invoice}
-          />
-          <PrivateRoute
-            exact
-            path="/dashboard/NewProjects/:id/request/:requestId/requirements"
-            component={Requirements}
-          />
-          <PrivateRoute
-            exact
-            path="/dashboard/NewProjects/:id/request/:requestId"
-            component={Requests}
-          />
-          <PrivateRoute
-            exact
-            path="/dashboard/NewProjects"
-            component={Projects}
-          /> */}
+          */}
+          <Route exact path={`${url}/Gymnastic`} component={Gymnastic} />
+          <Route exact path={`${url}/Cardio`} component={Cardio} />
+          <Route exact path={`${url}/Yoga`} component={Yoga} />
         </Switch>
       </main>
     </div>
