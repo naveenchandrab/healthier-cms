@@ -11,7 +11,8 @@ const useStyles = makeStyles({
     display: 'flex',
     margin: '75px auto',
     borderRadius: 4,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    backgroundColor: '#000'
   },
   controls: {
     display: 'flex',
@@ -90,6 +91,7 @@ const Player = ({ src, width }) => {
   const videoRef = useRef();
   const volumeRangeRef = useRef();
   const timeRangeRef = useRef();
+  let interval;
 
   const setVolumeRange = () => {
     const volumeRange = volumeRangeRef.current;
@@ -186,7 +188,7 @@ const Player = ({ src, width }) => {
 
   useEffect(() => {
     customVolume();
-    setInterval(() => {
+    interval = setInterval(() => {
       setCurrentTime(setCustomCurrentTime());
       setLength(getDuration());
     }, 10);
@@ -197,11 +199,20 @@ const Player = ({ src, width }) => {
   }, [src]);
 
   useEffect(() => {
-    if (Number(currentTime) === Math.trunc(videoRef.current.duration)) {
+    const video = videoRef.current;
+    if (Number(currentTime) === Math.trunc(video.duration)) {
       setCurrentTime(0);
+      video.currentTime = 0;
+      video.pause();
       setPaused(false);
     }
   }, [currentTime]);
+
+  useEffect(() => {
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <Box className={classes.Player}>

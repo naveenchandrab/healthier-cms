@@ -50,12 +50,14 @@ const Cardio = ({
 
   return (
     <Box>
-      <VideoPlayer
-        url={activeVideo}
-        open={openVideoDialogue}
-        width={800}
-        onClose={() => setOpenVideoDialogue(false)}
-      />
+      {openVideoDialogue && (
+        <VideoPlayer
+          url={activeVideo}
+          open={openVideoDialogue}
+          width={800}
+          onClose={() => setOpenVideoDialogue(false)}
+        />
+      )}
       <Box marginBottom={2}>
         <Typography variant="h6">Cardio Excersises</Typography>
       </Box>
