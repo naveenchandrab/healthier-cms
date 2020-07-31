@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Typography,
@@ -22,18 +23,25 @@ const useStyles = makeStyles({
   }
 });
 
-const Cardio = () => {
+const Cardio = ({
+  exercises,
+  exercise,
+  setExercise,
+  setExercises,
+  setLoading
+}) => {
   const classes = useStyles();
-  const [data, setData] = useState();
 
   const getData = async () => {
+    setLoading(true);
     const result = await getExercises();
-    setData(result);
+    setExercises(result);
+    setLoading(false);
   };
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [exercise]);
 
   return (
     <Box>
@@ -41,7 +49,11 @@ const Cardio = () => {
         <Typography variant="h6">Cardio Excersises</Typography>
       </Box>
       <Box marginBottom={4}>
-        <CardioForm />
+        <CardioForm
+          data={exercise}
+          setData={setExercise}
+          setLoading={setLoading}
+        />
       </Box>
       <Box>
         <TableContainer component={Paper} elevation={0}>
@@ -63,17 +75,17 @@ const Cardio = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data &&
-                data.map(exercise => (
-                  <TableRow key={exercise._id}>
+              {exercises &&
+                exercises.map(exrcise => (
+                  <TableRow key={exrcise._id}>
                     <TableCell className={classes.tableCell} padding="none">
-                      {exercise.name}
+                      {exrcise.name}
                     </TableCell>
                     <TableCell className={classes.tableCell} padding="none">
-                      {exercise.category.name}
+                      {exrcise.category.name}
                     </TableCell>
                     <TableCell className={classes.tableCell} padding="none">
-                      {exercise.video}
+                      {exrcise.video}
                     </TableCell>
                     <TableCell className={classes.tableCell} padding="none">
                       <Box display="flex" justifyContent="flex-end">
@@ -95,6 +107,14 @@ const Cardio = () => {
       </Box>
     </Box>
   );
+};
+
+Cardio.propTypes = {
+  exercises: PropTypes.array,
+  exercise: PropTypes.object,
+  setExercise: PropTypes.func,
+  setExercises: PropTypes.func,
+  setLoading: PropTypes.func
 };
 
 export default Cardio;

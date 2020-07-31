@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Box, Button, FormControl, Select, MenuItem } from '@material-ui/core';
 import ResponsiveGridLayout from '../../../../components/common/ResponsiveGridLayout';
 import OutlinedTextField from '../../../../components/common/OutlinedTextField';
@@ -10,9 +11,10 @@ import {
   uploadFileToSignedUrl
 } from '../../../../utils/apis/exercises';
 
-const CardioForm = () => {
+const CardioForm = ({ data, setData, setLoading }) => {
   const [categories, setCategories] = useState();
-  const [category, setCategory] = useState();
+  const [name, setName] = useState();
+  const [category, setCategory] = useState(data.category);
   const [file, setFile] = useState();
   const fileInputRef = useRef();
   const formRef = useRef();
@@ -23,23 +25,27 @@ const CardioForm = () => {
   };
 
   const handleSubmit = async e => {
+    setLoading(true);
     e.preventDefault();
     if (file) {
-      const formObject = new FormData(formRef.current);
       const { signedUrl } = await getSignedUrl({
         name: file.name,
         type: 'video',
         size: file.size,
-        id: 12
+        id: 'cardio'
       });
       const fileUrl = await uploadFileToSignedUrl(signedUrl, file);
       const finalObject = {
-        name: formObject.get('name'),
+        name,
         category,
         video: fileUrl
       };
-      await postExercise(finalObject);
-      getCategories();
+      const result = await postExercise(finalObject);
+      setData(result);
+      setName('');
+      setCategory(0);
+      setFile(null);
+      setLoading(false);
     }
   };
 
@@ -60,7 +66,13 @@ const CardioForm = () => {
       <Box marginBottom={2}>
         <ResponsiveGridLayout minwidth={300}>
           <Box>
-            <OutlinedTextField fullWidth name="name" placeholder="Name" />
+            <OutlinedTextField
+              fullWidth
+              name="name"
+              placeholder="Name"
+              value={name}
+              onChange={e => setName(e.target.value)}
+            />
           </Box>
           <Box>
             <FormControl fullWidth hiddenLabel variant="outlined" size="small">
@@ -109,6 +121,12 @@ const CardioForm = () => {
       </Box>
     </form>
   );
+};
+
+CardioForm.propTypes = {
+  data: PropTypes.object,
+  setData: PropTypes.func,
+  setLoading: PropTypes.func
 };
 
 export default CardioForm;

@@ -1,9 +1,11 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import CommonReducer from '../containers/common.duck';
+import CardioReducer from '../containers/Exercises/Cardio/index.duck';
 
 const rootReducer = combineReducers({
-  common: CommonReducer
+  common: CommonReducer,
+  cardio: CardioReducer
 });
 
 const initialState = {};

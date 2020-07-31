@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SideNav from '../SideNav';
 import Topbar from '../Topbar';
 import Yoga from '../Exercises/Yoga';
-import Cardio from '../Exercises/Cardio';
+import Cardio from '../../containers/Exercises/Cardio';
 import Gymnastic from '../Exercises/Gymnastic';
 
 const drawerWidth = 240;
