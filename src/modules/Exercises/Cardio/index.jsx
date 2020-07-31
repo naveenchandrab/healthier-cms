@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import PlayIcon from '@material-ui/icons/PlayCircleFilled';
 import {
@@ -12,12 +12,13 @@ import {
   TableHead,
   TableRow,
   TableCell,
-  TableBody
+  TableBody,
+  IconButton
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { getExercises } from '../../../utils/apis/exercises';
 import CardioForm from './CardioForm';
-import VIdeoPlayerFun from '../../../components/common/VideoPlayer/VIdeoPlayerFun';
+import VideoPlayer from '../../../components/common/VideoPlayer';
 
 const useStyles = makeStyles({
   tableCell: {
@@ -33,6 +34,8 @@ const Cardio = ({
   setLoading
 }) => {
   const classes = useStyles();
+  const [activeVideo, setActiveVideo] = useState();
+  const [openVideoDialogue, setOpenVideoDialogue] = useState(false);
 
   const getData = async () => {
     setLoading(true);
@@ -47,7 +50,12 @@ const Cardio = ({
 
   return (
     <Box>
-      <VIdeoPlayerFun src="https://v.redd.it/4dl54tigwss41/DASH_240" />
+      <VideoPlayer
+        url={activeVideo}
+        open={openVideoDialogue}
+        width={800}
+        onClose={() => setOpenVideoDialogue(false)}
+      />
       <Box marginBottom={2}>
         <Typography variant="h6">Cardio Excersises</Typography>
       </Box>
@@ -88,8 +96,14 @@ const Cardio = ({
                       {exrcise.category.name}
                     </TableCell>
                     <TableCell className={classes.tableCell} padding="none">
-                      <PlayIcon />
-                      {/* {exrcise.video} */}
+                      <IconButton
+                        onClick={() => {
+                          setOpenVideoDialogue(true);
+                          setActiveVideo(exrcise.video);
+                        }}
+                      >
+                        <PlayIcon />
+                      </IconButton>
                     </TableCell>
                     <TableCell className={classes.tableCell} padding="none">
                       <Box display="flex" justifyContent="flex-end">
