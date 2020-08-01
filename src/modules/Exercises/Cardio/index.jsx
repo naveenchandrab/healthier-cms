@@ -100,6 +100,7 @@ const Cardio = ({
           open={openVideoDialogue}
           width={800}
           onClose={() => setOpenVideoDialogue(false)}
+          autoPlay
         />
       )}
       <Box marginBottom={2}>
@@ -111,6 +112,7 @@ const Cardio = ({
           data={exercise}
           setData={setExercise}
           setLoading={setLoading}
+          onUpdate={() => setUpdatedRequested(false)}
         />
       </Box>
       <Box>

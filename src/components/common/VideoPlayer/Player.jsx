@@ -109,7 +109,7 @@ const useStyles = makeStyles({
   }
 });
 
-const Player = ({ src, width }) => {
+const Player = ({ src, width, autoPlay }) => {
   const classes = useStyles();
   const [formattedTime, setFormattedTime] = useState();
   const [formattedLength, setFormattedLength] = useState();
@@ -226,6 +226,10 @@ const Player = ({ src, width }) => {
 
   useEffect(() => {
     videoRef.current.load();
+    if (autoPlay) {
+      videoRef.current.play();
+      setPaused(true);
+    }
   }, [src]);
 
   useEffect(() => {
@@ -348,6 +352,7 @@ const Player = ({ src, width }) => {
 
 Player.propTypes = {
   src: PropTypes.string,
+  autoPlay: PropTypes.bool,
   width: PropTypes.number
 };
 

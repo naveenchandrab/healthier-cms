@@ -33,13 +33,13 @@ const useStyles = makeStyles({
   }
 });
 
-const VideoPlayer = ({ url, open, width, onClose }) => {
+const VideoPlayer = ({ url, open, width, onClose, autoPlay }) => {
   const classes = useStyles();
   return (
     <Box className={`${classes.root} ${open && classes.open}`}>
       <Box className={classes.overlay} onClick={onClose} />
       <Box>
-        <Player src={url} width={width} />
+        <Player src={url} width={width} autoPlay={autoPlay} />
       </Box>
     </Box>
   );
@@ -49,6 +49,7 @@ VideoPlayer.propTypes = {
   url: PropTypes.string,
   width: PropTypes.number,
   open: PropTypes.bool,
+  autoPlay: PropTypes.bool,
   onClose: PropTypes.func
 };
 

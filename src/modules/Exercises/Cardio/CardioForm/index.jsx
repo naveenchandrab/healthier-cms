@@ -21,7 +21,13 @@ import {
 } from '../../../../utils/apis/exercises';
 import VideoPlayer from '../../../../components/common/VideoPlayer';
 
-const CardioForm = ({ data, setData, setLoading, updatedRequested }) => {
+const CardioForm = ({
+  data,
+  setData,
+  setLoading,
+  updatedRequested,
+  onUpdate
+}) => {
   const [categories, setCategories] = useState();
   const [name, setName] = useState(data.name);
   const [category, setCategory] = useState(data.category);
@@ -30,17 +36,25 @@ const CardioForm = ({ data, setData, setLoading, updatedRequested }) => {
   const formRef = useRef();
   const [selectedVideo, setSelectedVideo] = useState();
   const [openVideoDialogue, setOpenVideoDialogue] = useState(false);
+  const isValid = name && category && file;
 
   const getCategories = async () => {
     const result = await getExerciseCategories();
     setCategories(result);
   };
 
+  const resetForm = () => {
+    setName('');
+    setCategory(0);
+    setFile(null);
+    setSelectedVideo(null);
+    setLoading(false);
+  };
+
   const handleSubmit = async e => {
     e.preventDefault();
-    setLoading(true);
-
     if (file) {
+      setLoading(true);
       const { signedUrl } = await getSignedUrl({
         name: file.name,
         type: 'video',
@@ -56,11 +70,7 @@ const CardioForm = ({ data, setData, setLoading, updatedRequested }) => {
       };
       const result = await postExercise(finalObject);
       setData(result);
-      setName('');
-      setCategory(0);
-      setFile(null);
-      setSelectedVideo(null);
-      setLoading(false);
+      resetForm();
     }
   };
 
@@ -84,11 +94,8 @@ const CardioForm = ({ data, setData, setLoading, updatedRequested }) => {
     };
     const result = await updateExercise(data._id, finalObject);
     setData(result);
-    setName('');
-    setCategory(0);
-    setFile(null);
-    setSelectedVideo(null);
-    setLoading(false);
+    resetForm();
+    onUpdate();
   };
 
   const handleUploadButtonClick = () => {
@@ -107,9 +114,14 @@ const CardioForm = ({ data, setData, setLoading, updatedRequested }) => {
 
   useEffect(() => {
     setName(data.name);
-    setCategory(data.category._id);
+    if (data.name === name) setName('');
+    setCategory(data.category._id || 0);
     setSelectedVideo(data.video);
   }, [data]);
+
+  useEffect(() => {
+    setFile(data.video);
+  }, [updatedRequested]);
 
   return (
     <form
@@ -122,6 +134,7 @@ const CardioForm = ({ data, setData, setLoading, updatedRequested }) => {
           open={openVideoDialogue}
           width={800}
           onClose={() => setOpenVideoDialogue(false)}
+          autoPlay
         />
       )}
       <Box marginBottom={2}>
@@ -183,7 +196,13 @@ const CardioForm = ({ data, setData, setLoading, updatedRequested }) => {
         </ResponsiveGridLayout>
       </Box>
       <Box maxWidth={150}>
-        <Button type="submit" fullWidth variant="contained" color="primary">
+        <Button
+          disabled={!isValid}
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+        >
           {updatedRequested ? 'Update' : 'Submit'}
         </Button>
       </Box>
@@ -194,6 +213,7 @@ const CardioForm = ({ data, setData, setLoading, updatedRequested }) => {
 CardioForm.propTypes = {
   data: PropTypes.object,
   setData: PropTypes.func,
+  onUpdate: PropTypes.func,
   setLoading: PropTypes.func,
   updatedRequested: PropTypes.bool
 };
