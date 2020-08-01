@@ -69,6 +69,36 @@ const useStyles = makeStyles({
       cursor: 'pointer',
       WebkitAppearance: 'none',
       marginTop: '-4px'
+    },
+    '&::-moz-range-track': {
+      width: '100%',
+      height: 6,
+      cursor: 'pointer',
+      boxShadow:
+        '0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0)',
+      background: '#796465',
+      borderRadius: '1.9px',
+      border: '0px solid rgba(1, 1, 1, 0)'
+    },
+    '&::-moz-range-thumb': {
+      boxShadow:
+        '0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0)',
+      border: '0px solid rgba(0, 0, 0, 0)',
+      height: 15,
+      width: 15,
+      borderRadius: 10,
+      background: '#eeeeee',
+      cursor: 'pointer',
+      WebkitAppearance: 'none',
+      marginTop: '-4px'
+    },
+    '&::-ms-track': {
+      width: '100%',
+      height: 8,
+      cursor: 'pointer',
+      background: 'transparent',
+      borderColor: 'transparent',
+      color: 'transparent'
     }
   },
   volumeRange: {

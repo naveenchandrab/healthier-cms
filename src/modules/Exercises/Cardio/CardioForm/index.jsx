@@ -1,7 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, FormControl, Select, MenuItem } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  FormControl,
+  Select,
+  MenuItem,
+  IconButton
+} from '@material-ui/core';
+import PlayIcon from '@material-ui/icons/PlayCircleFilled';
 import ResponsiveGridLayout from '../../../../components/common/ResponsiveGridLayout';
 import OutlinedTextField from '../../../../components/common/OutlinedTextField';
 import {
@@ -10,6 +18,7 @@ import {
   postExercise,
   uploadFileToSignedUrl
 } from '../../../../utils/apis/exercises';
+import VideoPlayer from '../../../../components/common/VideoPlayer';
 
 const CardioForm = ({ data, setData, setLoading }) => {
   const [categories, setCategories] = useState();
@@ -18,6 +27,8 @@ const CardioForm = ({ data, setData, setLoading }) => {
   const [file, setFile] = useState();
   const fileInputRef = useRef();
   const formRef = useRef();
+  const [selectedVideo, setSelectedVideo] = useState();
+  const [openVideoDialogue, setOpenVideoDialogue] = useState(false);
 
   const getCategories = async () => {
     const result = await getExerciseCategories();
@@ -55,6 +66,8 @@ const CardioForm = ({ data, setData, setLoading }) => {
 
   const onFileChange = e => {
     setFile(e.target.files[0]);
+    const objectURL = URL.createObjectURL(e.target.files[0]);
+    setSelectedVideo(objectURL);
   };
 
   useEffect(() => {
@@ -63,6 +76,14 @@ const CardioForm = ({ data, setData, setLoading }) => {
 
   return (
     <form onSubmit={handleSubmit} ref={formRef}>
+      {openVideoDialogue && (
+        <VideoPlayer
+          url={selectedVideo}
+          open={openVideoDialogue}
+          width={800}
+          onClose={() => setOpenVideoDialogue(false)}
+        />
+      )}
       <Box marginBottom={2}>
         <ResponsiveGridLayout minwidth={300}>
           <Box>
@@ -104,13 +125,20 @@ const CardioForm = ({ data, setData, setLoading }) => {
               onChange={onFileChange}
               accept="video/*"
             />
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={handleUploadButtonClick}
-            >
-              Upload Video
-            </Button>
+            <Box marginRight={1} component="span">
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleUploadButtonClick}
+              >
+                Upload Video
+              </Button>
+            </Box>
+            {selectedVideo && (
+              <IconButton onClick={() => setOpenVideoDialogue(true)}>
+                <PlayIcon />
+              </IconButton>
+            )}
           </Box>
         </ResponsiveGridLayout>
       </Box>
