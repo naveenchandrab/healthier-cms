@@ -16,7 +16,11 @@ import {
   IconButton
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { getExercises, deleteExercise } from '../../../utils/apis/exercises';
+import {
+  getExercises,
+  deleteExercise,
+  getExercise
+} from '../../../utils/apis/exercises';
 import CardioForm from './CardioForm';
 import VideoPlayer from '../../../components/common/VideoPlayer';
 
@@ -38,6 +42,7 @@ const Cardio = ({
   const classes = useStyles();
   const [activeVideo, setActiveVideo] = useState();
   const [openVideoDialogue, setOpenVideoDialogue] = useState(false);
+  const [updatedRequested, setUpdatedRequested] = useState(false);
 
   const getData = async () => {
     try {
@@ -58,11 +63,17 @@ const Cardio = ({
       setLoading(false);
       showSnackbar({
         show: true,
-        message: 'Exercise Deleted..'
+        message: 'Exercise Deleted..!'
       });
     } catch (error) {
       setLoading(false);
     }
+  };
+
+  const handleUpdate = async id => {
+    const data = await getExercise(id);
+    setExercise(data);
+    setUpdatedRequested(true);
   };
 
   const onDeleteButtonClick = id => {
@@ -96,6 +107,7 @@ const Cardio = ({
       </Box>
       <Box marginBottom={4}>
         <CardioForm
+          updatedRequested={updatedRequested}
           data={exercise}
           setData={setExercise}
           setLoading={setLoading}
@@ -143,7 +155,11 @@ const Cardio = ({
                     <TableCell className={classes.tableCell} padding="none">
                       <Box display="flex" justifyContent="flex-end">
                         <Box marginRight={2}>
-                          <Button variant="outlined" color="primary">
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => handleUpdate(exrcise._id)}
+                          >
                             Update
                           </Button>
                         </Box>

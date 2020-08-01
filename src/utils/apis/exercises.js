@@ -16,6 +16,13 @@ export const getExercises = () =>
       .catch(error => reject(error));
   });
 
+export const getExercise = id =>
+  new Promise((resolve, reject) => {
+    Axios.get(`/exercises/${id}`)
+      .then(({ data }) => resolve(data))
+      .catch(error => reject(error));
+  });
+
 export const postExercise = data =>
   new Promise((resolve, reject) => {
     Axios.post('/exercises', data)
@@ -26,6 +33,13 @@ export const postExercise = data =>
 export const deleteExercise = id =>
   new Promise((resolve, reject) => {
     Axios.delete(`/exercises/${id}`)
+      .then(({ data }) => resolve(data))
+      .catch(error => reject(error));
+  });
+
+export const updateExercise = (id, data) =>
+  new Promise((resolve, reject) => {
+    Axios.put(`/exercises/${id}`, data)
       .then(({ data }) => resolve(data))
       .catch(error => reject(error));
   });
