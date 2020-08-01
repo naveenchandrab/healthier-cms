@@ -2,7 +2,7 @@ import React from 'react';
 import { Snackbar as MuiSnackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/styles';
-// import { AppContext } from '../../../contexts/AppContext';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   topRight: {
@@ -15,13 +15,15 @@ const useStyles = makeStyles(theme => ({
 
 const Snackbar = () => {
   const classes = useStyles();
-  // const { snackbar, setSnackbar } = useContext(AppContext);
+  const {
+    snackbar: { show, message, type }
+  } = useSelector(state => state.common);
 
   const handleClose = () => {};
 
   return (
     <MuiSnackbar
-      // open={snackbar.show}
+      open={show}
       autoHideDuration={4000}
       onClose={handleClose}
       anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -32,9 +34,9 @@ const Snackbar = () => {
         classes={{ filledInfo: classes.filledInfo }}
         variant="filled"
         onClose={handleClose}
-        // severity={snackbar.type}
+        severity={type}
       >
-        {/* {snackbar.message} */}
+        {message}
       </Alert>
     </MuiSnackbar>
   );

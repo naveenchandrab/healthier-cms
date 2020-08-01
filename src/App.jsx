@@ -10,6 +10,8 @@ import Root from './modules/Root';
 import theme from './utils/theme';
 import Login from './modules/Login';
 import LoadingScreen from './components/common/LoadingScreen';
+import DialogueBox from './components/common/DialogueBox';
+import Snackbar from './components/common/Snackbar';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -22,6 +24,8 @@ const App = () => {
       <CssBaseline />
       <div className="app">
         {loading && <LoadingScreen />}
+        <DialogueBox />
+        <Snackbar />
         <Switch>
           <Route path="/dashboard" component={Root} />
           <Route path="/" component={Login} />

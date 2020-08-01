@@ -23,6 +23,13 @@ export const postExercise = data =>
       .catch(error => reject(error));
   });
 
+export const deleteExercise = id =>
+  new Promise((resolve, reject) => {
+    Axios.delete(`/exercises/${id}`)
+      .then(({ data }) => resolve(data))
+      .catch(error => reject(error));
+  });
+
 export const getSignedUrl = data =>
   new Promise((resolve, reject) => {
     Axios.post('/upload', data)

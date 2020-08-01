@@ -56,6 +56,7 @@ const CardioForm = ({ data, setData, setLoading }) => {
       setName('');
       setCategory(0);
       setFile(null);
+      setSelectedVideo(null);
       setLoading(false);
     }
   };

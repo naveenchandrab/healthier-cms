@@ -16,7 +16,7 @@ import {
   IconButton
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { getExercises } from '../../../utils/apis/exercises';
+import { getExercises, deleteExercise } from '../../../utils/apis/exercises';
 import CardioForm from './CardioForm';
 import VideoPlayer from '../../../components/common/VideoPlayer';
 
@@ -31,17 +31,50 @@ const Cardio = ({
   exercise,
   setExercise,
   setExercises,
-  setLoading
+  setLoading,
+  showDialogueBox,
+  showSnackbar
 }) => {
   const classes = useStyles();
   const [activeVideo, setActiveVideo] = useState();
   const [openVideoDialogue, setOpenVideoDialogue] = useState(false);
 
   const getData = async () => {
-    setLoading(true);
-    const result = await getExercises();
-    setExercises(result);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const result = await getExercises();
+      setExercises(result);
+      setLoading(false);
+    } catch (ex) {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async id => {
+    try {
+      setLoading(true);
+      await deleteExercise(id);
+      getData();
+      setLoading(false);
+      showSnackbar({
+        show: true,
+        message: 'Exercise Deleted..'
+      });
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  const onDeleteButtonClick = id => {
+    const dialogueBoxProps = {
+      open: true,
+      title: 'Are you sure, you want to delete this exercise ?',
+      description: 'Exercise will be deleted permanently',
+      cancelButtonText: 'Cancel',
+      onOk: () => handleDelete(id),
+      okButtonText: 'Delete'
+    };
+    showDialogueBox(dialogueBoxProps);
   };
 
   useEffect(() => {
@@ -114,7 +147,11 @@ const Cardio = ({
                             Update
                           </Button>
                         </Box>
-                        <Button variant="contained" color="primary">
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => onDeleteButtonClick(exrcise._id)}
+                        >
                           Delete
                         </Button>
                       </Box>
@@ -134,7 +171,9 @@ Cardio.propTypes = {
   exercise: PropTypes.object,
   setExercise: PropTypes.func,
   setExercises: PropTypes.func,
-  setLoading: PropTypes.func
+  showDialogueBox: PropTypes.func,
+  setLoading: PropTypes.func,
+  showSnackbar: PropTypes.func
 };
 
 export default Cardio;
