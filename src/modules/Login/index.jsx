@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
-// import { userLogin } from '../../utils/apis/adminUser';
+import { userLogin } from '../../utils/apis/auth';
 
 function Copyright() {
   return (
@@ -55,25 +55,17 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // const { setUserDetails, setAccessToken, setAuthenticated } = useAuthContext();
-
   const handleSubmit = async e => {
-    // e.preventDefault();
-    // try {
-    //   if (email && password) {
-    //     const response = await userLogin({ email, password });
-    //     if (response.user && response.token) {
-    //       updateTokenForPersistnce(response.token);
-    //       setAccessToken(response.token);
-    //       setUserDetails(response.user);
-    //       setAuthenticated(true);
-    //       history.push('/dashboard/NewProjects');
-    //     }
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    // }
-    history.push('/dashboard/Cardio');
+    e.preventDefault();
+    try {
+      if (email && password) {
+        const response = await userLogin({ email, password });
+        localStorage.setItem('userToken', response);
+        history.push('/dashboard/Cardio');
+      }
+    } catch (ex) {
+      console.error(ex.message);
+    }
   };
 
   return (

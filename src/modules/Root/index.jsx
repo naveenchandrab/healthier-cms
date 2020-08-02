@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, useRouteMatch } from 'react-router-dom';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import SideNav from '../SideNav';
@@ -7,6 +7,7 @@ import Topbar from '../Topbar';
 import Yoga from '../Exercises/Yoga';
 import Cardio from '../../containers/Exercises/Cardio';
 import Gymnastic from '../Exercises/Gymnastic';
+import PrivateRoute from '../../hoc/PrivateRoute';
 
 const drawerWidth = 240;
 
@@ -62,9 +63,9 @@ const Root = () => {
             component={Quotation}
           />
           */}
-          <Route exact path={`${url}/Gymnastic`} component={Gymnastic} />
-          <Route exact path={`${url}/Cardio`} component={Cardio} />
-          <Route exact path={`${url}/Yoga`} component={Yoga} />
+          <PrivateRoute exact path={`${url}/Gymnastic`} component={Gymnastic} />
+          <PrivateRoute exact path={`${url}/Cardio`} component={Cardio} />
+          <PrivateRoute exact path={`${url}/Yoga`} component={Yoga} />
         </Switch>
       </main>
     </div>

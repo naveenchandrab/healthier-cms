@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -13,8 +13,7 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-// import { useHistory } from 'react-router-dom';
-// import { logoutUser } from '../../contexts/authContext';
+import { useHistory } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -46,7 +45,7 @@ const Topbar = ({ open, onDrawerOpen, currentTab }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const manuOpen = Boolean(anchorEl);
-  // const history = useHistory();
+  const history = useHistory();
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget);
@@ -55,8 +54,6 @@ const Topbar = ({ open, onDrawerOpen, currentTab }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(() => {}, []);
 
   return (
     <AppBar
@@ -109,8 +106,8 @@ const Topbar = ({ open, onDrawerOpen, currentTab }) => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                // logoutUser();
-                // history.push('/');
+                localStorage.removeItem('userToken');
+                history.push('/');
               }}
             >
               Logout

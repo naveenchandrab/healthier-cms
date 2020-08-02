@@ -8,7 +8,7 @@ import Axios from 'axios';
 import { useSelector } from 'react-redux';
 import Root from './modules/Root';
 import theme from './utils/theme';
-import Login from './modules/Login';
+import Login from './containers/Login';
 import LoadingScreen from './components/common/LoadingScreen';
 import DialogueBox from './components/common/DialogueBox';
 import Snackbar from './components/common/Snackbar';
