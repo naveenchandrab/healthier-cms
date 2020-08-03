@@ -78,7 +78,7 @@ const SideNav = ({ open, onDrawerClose }) => {
     >
       <div className={classes.drawerHeader}>
         <Box color={theme.palette.white} marginLeft={1}>
-          <Typography variant="h5">Healthier</Typography>
+          <Typography variant="h5">{process.env.REACT_APP_NAME}</Typography>
         </Box>
         <IconButton
           style={{ color: theme.palette.white }}
