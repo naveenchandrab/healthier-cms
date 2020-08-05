@@ -7,7 +7,8 @@ import {
   FormControl,
   Select,
   MenuItem,
-  IconButton
+  IconButton,
+  Typography
 } from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayCircleFilled';
 import ResponsiveGridLayout from '../../../../components/common/ResponsiveGridLayout';
@@ -26,7 +27,8 @@ const CardioForm = ({
   setData,
   setLoading,
   updatedRequested,
-  onUpdate
+  onUpdate,
+  title
 }) => {
   const [categories, setCategories] = useState();
   const [name, setName] = useState(data.name);
@@ -128,6 +130,25 @@ const CardioForm = ({
       onSubmit={e => (updatedRequested ? handleUpdate(e) : handleSubmit(e))}
       ref={formRef}
     >
+      <Box
+        marginBottom={4}
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Typography variant="h5">{title}</Typography>
+        <Box minWidth={150}>
+          <Button
+            disabled={!isValid}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
+            {updatedRequested ? 'Update' : 'Submit'}
+          </Button>
+        </Box>
+      </Box>
       {openVideoDialogue && (
         <VideoPlayer
           url={selectedVideo}
@@ -195,17 +216,6 @@ const CardioForm = ({
           </Box>
         </ResponsiveGridLayout>
       </Box>
-      <Box maxWidth={150}>
-        <Button
-          disabled={!isValid}
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-        >
-          {updatedRequested ? 'Update' : 'Submit'}
-        </Button>
-      </Box>
     </form>
   );
 };
@@ -215,7 +225,8 @@ CardioForm.propTypes = {
   setData: PropTypes.func,
   onUpdate: PropTypes.func,
   setLoading: PropTypes.func,
-  updatedRequested: PropTypes.bool
+  updatedRequested: PropTypes.bool,
+  title: PropTypes.string
 };
 
 export default CardioForm;

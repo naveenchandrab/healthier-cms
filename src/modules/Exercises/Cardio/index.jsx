@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import PlayIcon from '@material-ui/icons/PlayCircleFilled';
+import EditIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
 import {
   Box,
-  Typography,
-  Button,
   Paper,
   TableContainer,
   Table,
@@ -103,11 +103,9 @@ const Cardio = ({
           autoPlay
         />
       )}
-      <Box marginBottom={2}>
-        <Typography variant="h6">Cardio Excersises</Typography>
-      </Box>
-      <Box marginBottom={4}>
+      <Box marginBottom={6}>
         <CardioForm
+          title="Cardio Excersises"
           updatedRequested={updatedRequested}
           data={exercise}
           setData={setExercise}
@@ -157,21 +155,18 @@ const Cardio = ({
                     <TableCell className={classes.tableCell} padding="none">
                       <Box display="flex" justifyContent="flex-end">
                         <Box marginRight={2}>
-                          <Button
-                            variant="outlined"
-                            color="primary"
-                            onClick={() => handleUpdate(exrcise._id)}
-                          >
+                          <IconButton onClick={() => handleUpdate(exrcise._id)}>
+                            <EditIcon />
+                          </IconButton>
+                          {/* <Button variant="outlined" color="primary">
                             Update
-                          </Button>
+                          </Button> */}
                         </Box>
-                        <Button
-                          variant="contained"
-                          color="primary"
+                        <IconButton
                           onClick={() => onDeleteButtonClick(exrcise._id)}
                         >
-                          Delete
-                        </Button>
+                          <DeleteIcon />
+                        </IconButton>
                       </Box>
                     </TableCell>
                   </TableRow>
