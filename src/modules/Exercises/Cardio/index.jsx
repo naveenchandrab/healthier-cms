@@ -1,21 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import PlayIcon from '@material-ui/icons/PlayCircleFilled';
-import EditIcon from '@material-ui/icons/Create';
-import DeleteIcon from '@material-ui/icons/Delete';
-import {
-  Box,
-  Paper,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  IconButton
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { Box } from '@material-ui/core';
 import {
   getExercises,
   deleteExercise,
@@ -23,12 +9,7 @@ import {
 } from '../../../utils/apis/exercises';
 import CardioForm from './CardioForm';
 import VideoPlayer from '../../../components/common/VideoPlayer';
-
-const useStyles = makeStyles({
-  tableCell: {
-    padding: 16
-  }
-});
+import DataTable from '../DataTable';
 
 const Cardio = ({
   exercises,
@@ -39,7 +20,6 @@ const Cardio = ({
   showDialogueBox,
   showSnackbar
 }) => {
-  const classes = useStyles();
   const [activeVideo, setActiveVideo] = useState();
   const [openVideoDialogue, setOpenVideoDialogue] = useState(false);
   const [updatedRequested, setUpdatedRequested] = useState(false);
@@ -114,66 +94,15 @@ const Cardio = ({
         />
       </Box>
       <Box>
-        <TableContainer component={Paper} elevation={0}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>
-                  <strong>Name</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Category</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Video</strong>
-                </TableCell>
-                <TableCell align="right">
-                  <strong>Actions</strong>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {exercises &&
-                exercises.map(exrcise => (
-                  <TableRow key={exrcise._id}>
-                    <TableCell className={classes.tableCell} padding="none">
-                      {exrcise.name}
-                    </TableCell>
-                    <TableCell className={classes.tableCell} padding="none">
-                      {exrcise.category.name}
-                    </TableCell>
-                    <TableCell className={classes.tableCell} padding="none">
-                      <IconButton
-                        onClick={() => {
-                          setOpenVideoDialogue(true);
-                          setActiveVideo(exrcise.video);
-                        }}
-                      >
-                        <PlayIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell className={classes.tableCell} padding="none">
-                      <Box display="flex" justifyContent="flex-end">
-                        <Box marginRight={2}>
-                          <IconButton onClick={() => handleUpdate(exrcise._id)}>
-                            <EditIcon />
-                          </IconButton>
-                          {/* <Button variant="outlined" color="primary">
-                            Update
-                          </Button> */}
-                        </Box>
-                        <IconButton
-                          onClick={() => onDeleteButtonClick(exrcise._id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <DataTable
+          data={exercises}
+          onVideoPlay={video => {
+            setOpenVideoDialogue(true);
+            setActiveVideo(video);
+          }}
+          onUpdate={id => handleUpdate(id)}
+          onDelete={id => onDeleteButtonClick(id)}
+        />
       </Box>
     </Box>
   );
