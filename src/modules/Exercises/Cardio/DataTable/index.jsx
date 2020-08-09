@@ -35,7 +35,7 @@ const DataTable = ({ data, onVideoPlay, onUpdate, onDelete }) => {
               <strong>Name</strong>
             </TableCell>
             <TableCell>
-              <strong>Category</strong>
+              <strong>Description</strong>
             </TableCell>
             <TableCell>
               <strong>Video</strong>
@@ -53,7 +53,7 @@ const DataTable = ({ data, onVideoPlay, onUpdate, onDelete }) => {
                   {dta.name}
                 </TableCell>
                 <TableCell className={classes.tableCell} padding="none">
-                  {dta.category.name}
+                  {dta.description}
                 </TableCell>
                 <TableCell className={classes.tableCell} padding="none">
                   <IconButton onClick={() => onVideoPlay(dta.video)}>

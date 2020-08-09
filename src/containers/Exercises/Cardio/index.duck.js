@@ -5,6 +5,7 @@ const SET_CARDIO_EXERCISE = 'CARDIO/SET_CARDIO_EXERCISE';
 const initialState = {
   exercise: {
     name: '',
+    description: '',
     category: 0,
     video: '',
     likes: 0

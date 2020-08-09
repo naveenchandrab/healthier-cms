@@ -9,7 +9,7 @@ import {
 } from '../../../utils/apis/exercises';
 import CardioForm from './CardioForm';
 import VideoPlayer from '../../../components/common/VideoPlayer';
-import DataTable from '../DataTable';
+import DataTable from './DataTable';
 
 const Cardio = ({
   exercises,
@@ -52,6 +52,7 @@ const Cardio = ({
 
   const handleUpdate = async id => {
     const data = await getExercise(id);
+    // console.log(data, 'UPDATE');
     setExercise(data);
     setUpdatedRequested(true);
   };

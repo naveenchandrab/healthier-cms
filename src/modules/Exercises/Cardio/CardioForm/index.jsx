@@ -1,24 +1,16 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Box,
-  Button,
-  FormControl,
-  Select,
-  MenuItem,
-  IconButton,
-  Typography
-} from '@material-ui/core';
+import { Box, Button, IconButton, Typography } from '@material-ui/core';
 import PlayIcon from '@material-ui/icons/PlayCircleFilled';
 import ResponsiveGridLayout from '../../../../components/common/ResponsiveGridLayout';
 import OutlinedTextField from '../../../../components/common/OutlinedTextField';
 import {
-  getExerciseCategories,
   getSignedUrl,
   postExercise,
   uploadFileToSignedUrl,
-  updateExercise
+  updateExercise,
+  getExerciseCategories
 } from '../../../../utils/apis/exercises';
 import VideoPlayer from '../../../../components/common/VideoPlayer';
 
@@ -30,27 +22,28 @@ const CardioForm = ({
   onUpdate,
   title
 }) => {
-  const [categories, setCategories] = useState();
+  const [category, setCategory] = useState();
   const [name, setName] = useState(data.name);
-  const [category, setCategory] = useState(data.category);
+  const [description, setDescription] = useState(data.description);
   const [file, setFile] = useState();
   const fileInputRef = useRef();
   const formRef = useRef();
   const [selectedVideo, setSelectedVideo] = useState();
   const [openVideoDialogue, setOpenVideoDialogue] = useState(false);
-  const isValid = name && category && file;
-
-  const getCategories = async () => {
-    const result = await getExerciseCategories();
-    setCategories(result);
-  };
+  const isValid = name && description;
 
   const resetForm = () => {
     setName('');
-    setCategory(0);
+    setDescription('');
     setFile(null);
     setSelectedVideo(null);
     setLoading(false);
+  };
+
+  const getCategory = async () => {
+    const result = await getExerciseCategories();
+    const catgry = result.find(cat => cat.name === 'Cardio');
+    setCategory(catgry._id);
   };
 
   const handleSubmit = async e => {
@@ -67,6 +60,7 @@ const CardioForm = ({
 
       const finalObject = {
         name,
+        description,
         category,
         video: fileUrl
       };
@@ -91,6 +85,7 @@ const CardioForm = ({
     }
     const finalObject = {
       name,
+      description,
       category,
       video: fileUrl || data.video
     };
@@ -111,19 +106,19 @@ const CardioForm = ({
   };
 
   useEffect(() => {
-    getCategories();
-  }, []);
-
-  useEffect(() => {
     setName(data.name);
+    setDescription(data.description);
     if (data.name === name) setName('');
-    setCategory(data.category._id || 0);
     setSelectedVideo(data.video);
   }, [data]);
 
+  // useEffect(() => {
+  //   setFile(data.video);
+  // }, [updatedRequested]);
+
   useEffect(() => {
-    setFile(data.video);
-  }, [updatedRequested]);
+    getCategory();
+  }, []);
 
   return (
     <form
@@ -170,25 +165,13 @@ const CardioForm = ({
             />
           </Box>
           <Box>
-            <FormControl fullWidth hiddenLabel variant="outlined" size="small">
-              <Select
-                name="category"
-                fullWidth
-                placeholder="select category"
-                value={category}
-                onChange={e => setCategory(e.target.value)}
-                defaultValue={0}
-              >
-                {categories &&
-                  [{ name: 'Select Category', _id: 0 }, ...categories].map(
-                    cat => (
-                      <MenuItem key={cat._id} value={cat._id}>
-                        {cat.name}
-                      </MenuItem>
-                    )
-                  )}
-              </Select>
-            </FormControl>
+            <OutlinedTextField
+              fullWidth
+              name="description"
+              placeholder="Description"
+              value={description}
+              onChange={e => setDescription(e.target.value)}
+            />
           </Box>
           <Box>
             <input
